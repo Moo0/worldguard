@@ -142,20 +142,22 @@ public class ProtectedCuboidRegion extends ProtectedRegion {
             BlockVector rMaxPoint = region.getMaximumPoint();
 
             // Check whether the region is outside the min and max vector
-            if (region instanceof ProtectedCuboidRegion) {
-                if ((rMinPoint.getBlockX() < min.getBlockX() && rMaxPoint.getBlockX() < min.getBlockX()) 
+            if ((rMinPoint.getBlockX() < min.getBlockX() && rMaxPoint.getBlockX() < min.getBlockX()) 
                 || (rMinPoint.getBlockX() > max.getBlockX() && rMaxPoint.getBlockX() > max.getBlockX())
                 || (rMinPoint.getBlockY() < min.getBlockY() && rMaxPoint.getBlockY() < min.getBlockY())
                 || (rMinPoint.getBlockY() > max.getBlockY() && rMaxPoint.getBlockY() > max.getBlockY())
                 || (rMinPoint.getBlockZ() < min.getBlockZ() && rMaxPoint.getBlockZ() < min.getBlockZ())
                 || (rMinPoint.getBlockZ() > max.getBlockZ() && rMaxPoint.getBlockZ() > max.getBlockZ())) {
-                    // One or more dimensions wholly outside. Regions aren't overlapping.
-                }
-                else {
-                    // ^ is false, therefore regions must be overlapping.
-                    intersectingRegions.add(regions.get(i));
-                }
+
+                // One or more dimensions wholly outside. Regions aren't overlapping.
                 continue;
+            }
+            else {
+                // ^ is false, therefore regions must be overlapping, if cuboid.
+                if (region instanceof ProtectedCuboidRegion) {
+                    intersectingRegions.add(regions.get(i));
+                    continue;
+                }
                 // No more checks needed for cuboid region against cuboid region!
             }
 
